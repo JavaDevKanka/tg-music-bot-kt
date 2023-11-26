@@ -1,12 +1,13 @@
 package ru.konkatenazia.tgmusicbotkt.services.basebot
 
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Component
 import org.telegram.telegrambots.bots.TelegramLongPollingBot
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands
 import org.telegram.telegrambots.meta.api.methods.send.SendAudio
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
-import org.telegram.telegrambots.meta.api.objects.Chat
 import org.telegram.telegrambots.meta.api.objects.InputFile
 import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand
@@ -20,6 +21,8 @@ class BotHeart(
     private val applicationEventPublisher: ApplicationEventPublisher
 ) : TelegramLongPollingBot() {
 
+    val logger: Logger = LoggerFactory.getLogger(BotHeart::class.java)
+
     @PostConstruct
     fun setCommands() {
         val commands: List<BotCommand> = listOf(
@@ -29,8 +32,10 @@ class BotHeart(
         execute(SetMyCommands(commands, BotCommandScopeDefault(), null))
     }
 
-    override fun onUpdateReceived(update: Update) {
-        applicationEventPublisher.publishEvent(update)
+    override fun onUpdateReceived(update: Update?) {
+        if (update != null) {
+            applicationEventPublisher.publishEvent(update)
+        }
     }
 
     fun sendMessage(message: SendMessage) {
