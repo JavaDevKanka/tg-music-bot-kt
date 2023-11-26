@@ -1,0 +1,66 @@
+telegram:
+  bot-name: ${BOT_NAME}
+  bot-token: ${BOT_TOKEN}
+
+server:
+  port: 8092
+
+cron:
+  task:
+    send.swear.result: '0 0 19 * * *'
+#    send.swear.result: '*/10 * * * * *'
+
+
+file:
+  archive:
+    path: ./music-files/archive
+  music:
+    path: ./music-files/music
+
+async:
+  pool:
+    corePoolSize: 20
+    maxPoolSize: 100
+    aliveTimeout: 60
+    queueSize: 70
+
+springfox:
+  documentation:
+    swagger:
+      v2:
+        path: /api-docs
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 400MB
+      max-request-size: 400MB
+  datasource:
+    url: jdbc:postgresql://localhost:5432/music_bot
+    username: postgres
+    password: postgres
+    hikari:
+      schema: mbt_kt
+    jpa:
+      hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL10Dialect
+  flyway:
+    url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
+    user: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    table: flyway_schema_history_tg_music_bot
+    locations: classpath:db/migration
+    enabled: true
+    schemas: mbt_kt
+  docker:
+    compose:
+      enabled: false
+
+
+logging:
+  level:
+    org.springframework.boot: info
+    root: info
