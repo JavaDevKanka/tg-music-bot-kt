@@ -40,7 +40,7 @@ class MessageProcessor(
 
             if (messageProcessingService.isEnglishLayout(messageText) && !messageProcessingService.isEnglishWord(messageText) && !messageText.startsWith("http")) {
                 logger.info("Тут отправляются переведенные кракозябры, текст был - \"$messageText\"")
-//                botHeart.sendMessage(chatId, messageProcessingService.invertKeyboardLayout(messageText), messageId)
+                botHeart.sendMessage(chatId, messageProcessingService.invertKeyboardLayout(messageText), messageId)
             }
         }
     }

@@ -2,7 +2,6 @@ package ru.konkatenazia.tgmusicbotkt.dto.word
 
 import com.fasterxml.jackson.annotation.JsonInclude
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 data class MeaningDTO(
     val partOfSpeech: String?,
     val definitions: List<DefinitionDTO>?,

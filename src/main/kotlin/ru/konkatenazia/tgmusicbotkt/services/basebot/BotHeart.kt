@@ -12,6 +12,7 @@ import org.telegram.telegrambots.meta.api.objects.InputFile
 import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand
 import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException
 import ru.konkatenazia.tgmusicbotkt.config.BotConfig
 import javax.annotation.PostConstruct
 
@@ -39,14 +40,24 @@ class BotHeart(
     }
 
     fun sendMessage(message: SendMessage) {
-        execute(message)
+        try {
+            execute(message)
+        } catch (e: TelegramApiException) {
+            logger.info("Не удалось отправить сообщение \"${message.text}\"")
+        }
+
     }
 
     fun sendMessage(chatId: Long, message: String) {
         val sendMessage = SendMessage()
         sendMessage.setChatId(chatId)
         sendMessage.text = message
-        execute(sendMessage)
+        try {
+            execute(sendMessage)
+        } catch (e: TelegramApiException) {
+            logger.info("Не удалось отправить сообщение \"$message\"")
+        }
+
     }
 
     fun sendMessage(chatId: Long, message: String, messageId: Int) {
@@ -54,12 +65,22 @@ class BotHeart(
         sendMessage.replyToMessageId = messageId
         sendMessage.setChatId(chatId)
         sendMessage.text = message
-        execute(sendMessage)
+        try {
+            execute(sendMessage)
+        } catch (e: TelegramApiException) {
+            logger.info("Не удалось отправить сообщение \"$message\"")
+        }
+
     }
 
     fun sendMessage(message: SendMessage, messageId: Int) {
         message.replyToMessageId = messageId
-        execute(message)
+        try {
+            execute(message)
+        } catch (e: TelegramApiException) {
+            logger.info("Не удалось отправить сообщение \"${message.text}\"")
+        }
+
     }
 
 
@@ -67,7 +88,12 @@ class BotHeart(
         val sendAudio = SendAudio()
         sendAudio.setChatId(chatId)
         sendAudio.audio = inputFile
-        execute(sendAudio)
+        try {
+            execute(sendAudio)
+        } catch (e: TelegramApiException) {
+            logger.info("Не удалось отправить файл \"${inputFile.mediaName}\"")
+        }
+
     }
 
     override fun getBotUsername(): String {

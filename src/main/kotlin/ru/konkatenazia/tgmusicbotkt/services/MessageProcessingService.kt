@@ -13,7 +13,6 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
 import java.util.regex.Pattern
-import kotlin.collections.ArrayList
 
 @Service
 class MessageProcessingService(
@@ -46,7 +45,8 @@ class MessageProcessingService(
 
         for (word in splittedWords) {
             try {
-                val response: ResponseEntity<Array<WordDTO>> = restTemplate.getForEntity(url + word, Array<WordDTO>::class.java)
+                val response: ResponseEntity<Array<WordDTO>> =
+                    restTemplate.getForEntity(url + word, Array<WordDTO>::class.java)
                 val insultWords = response.body
 
                 if (insultWords != null && response.statusCode.is2xxSuccessful) {
@@ -66,30 +66,25 @@ class MessageProcessingService(
         return false
     }
 
-    fun invertKeyboardLayout(messageText: String): String {
-        try {
-            val url = "https://raskladki.net.ru/post.php"
-            val obj = URL(url)
-            val connection: HttpURLConnection = obj.openConnection() as HttpURLConnection
-            connection.requestMethod = "POST"
-            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded")
-            val params = "text$messageText&lang=eng2rus"
-            connection.doOutput = true
-            val os = connection.outputStream
-            os.write(params.toByteArray())
-            os.flush()
-            os.close()
-            val input = BufferedReader(InputStreamReader(connection.inputStream))
-            var inputLine: String?
-            val response = StringBuilder()
-            while (input.readLine().also { inputLine = it } != null) {
-                response.append(inputLine)
-            }
-            return response.toString()
-        } catch (e: Exception) {
-            throw RuntimeException("Не удалось получить ответ от raskladki.net")
+    fun invertKeyboardLayout(text: String): String {
+        val url = "https://raskladki.net.ru/post.php"
+        val obj = URL(url)
+        val con = obj.openConnection() as HttpURLConnection
+        con.requestMethod = "POST"
+        con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded")
+        val params = "text=$text&lang=eng2rus"
+        con.doOutput = true
+        val os = con.outputStream
+        os.write(params.toByteArray())
+        os.flush()
+        os.close()
+        val `in` = BufferedReader(InputStreamReader(con.inputStream))
+        var inputLine: String?
+        val response = StringBuilder()
+        while (`in`.readLine().also { inputLine = it } != null) {
+            response.append(inputLine)
         }
-
+        `in`.close()
+        return response.toString()
     }
-
 }
