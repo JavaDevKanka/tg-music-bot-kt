@@ -1,8 +1,8 @@
 package ru.konkatenazia.tgmusicbotkt.dto.word
 
 data class PhoneticDTO(
-    private val text: String,
-    private val audio: String,
-    private val sourceUrl: String,
-    private val licence: LicenseDTO
+    val text: String,
+    val audio: String,
+    val sourceUrl: String,
+    val licence: LicenseDTO
 )

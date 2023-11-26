@@ -33,7 +33,7 @@ class MessageProcessor(
                         user,
                         chatId,
                         isActive = true,
-                        isGroutChat = true
+                        isGroupChat = true
                     )
                 }
             }
