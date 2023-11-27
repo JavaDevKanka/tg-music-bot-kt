@@ -32,7 +32,7 @@ class CallbackProcessor(
             }
 
             if (musicRepository.getUniqueAuthorFirstLetters().contains(callbackData.last().toString())) {
-                botHeart.sendMessage(keyboardService.getSongPagedKeyboard(chatId, 1, 10, callbackData))
+                botHeart.sendMessage(keyboardService.getSongPagedKeyboard(chatId, 1, 10, callbackData.last().toString()))
             }
 
             if (callbackData.length == 1 && callbackData[0].isLetter()) {

@@ -16,6 +16,6 @@ interface MusicRepository : JpaRepository<Music, Long> {
     @Query(value = "SELECT DISTINCT LEFT(author, 1) AS first_letter FROM music", nativeQuery = true)
     fun getUniqueAuthorFirstLetters(): List<String>
 
-    fun findAllByAuthorStartingWith(firstLetter: String, pageable: Pageable): List<Music>
-    fun findAllByAuthorStartingWithAndIdGreaterThan(firstLetter: String, lastSongId: Long, pageable: PageRequest): List<Music>
+    fun findAllByAuthorStartingWithIgnoreCase(firstLetter: String, pageable: Pageable): List<Music>
+    fun findAllByAuthorStartingWithIgnoreCaseAndIdGreaterThan(firstLetter: String, lastSongId: Long, pageable: PageRequest): List<Music>
 }

@@ -73,9 +73,9 @@ class KeyboardService(
         val pageable = PageRequest.of(page - 1, pageSize, Sort.by("author"))
 
         val authorsPage = if (lastAuthorId != null) {
-            musicRepository.findAllByAuthorStartingWithAndIdGreaterThan(firstLetter, lastAuthorId!!, pageable)
+            musicRepository.findAllByAuthorStartingWithIgnoreCaseAndIdGreaterThan(firstLetter, lastAuthorId!!, pageable)
         } else {
-            musicRepository.findAllByAuthorStartingWith(firstLetter, pageable)
+            musicRepository.findAllByAuthorStartingWithIgnoreCase(firstLetter, pageable)
         }
 
         val rows = mutableListOf<List<InlineKeyboardButton>>()
