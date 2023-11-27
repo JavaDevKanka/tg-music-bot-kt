@@ -32,7 +32,7 @@ class MainEventTransmitter(
             if (update.message.hasText()) {
                 val messageText = message.text
                 val commands = HashMap<String, Runnable>()
-                commands.put("/show") { botHeart.sendMessage(keyboardService.getMainKeyboard(chatId)) }
+                commands.put("/show") { botHeart.sendMessage(keyboardService.getLanguageSelectionKeyboard(chatId)) }
                 commands.put("/music") { botHeart.sendAudio(chatId, musicService.getRandomMusic()) }
                 for (command in commands.keys) {
                     if (messageText.contains(command)) {
