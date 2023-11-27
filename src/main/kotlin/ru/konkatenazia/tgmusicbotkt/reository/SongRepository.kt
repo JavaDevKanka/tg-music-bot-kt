@@ -7,7 +7,7 @@ import java.util.UUID
 
 interface SongRepository : JpaRepository<Song, UUID> {
 
-    fun getSongBySongName(songName: String): Song
+    fun getSongBySongName(songName: String): Song?
 
     @Query(value = "select path_to_file from song order by random() limit 1", nativeQuery = true)
     fun getRandomSong(): String

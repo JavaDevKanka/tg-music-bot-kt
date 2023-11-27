@@ -19,6 +19,7 @@ class Song(
     var music: Music,
 
     @Id
+    @GeneratedValue
     var id: UUID? = null
 )
 

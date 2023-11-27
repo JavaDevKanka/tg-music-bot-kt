@@ -1,5 +1,6 @@
 package ru.konkatenazia.tgmusicbotkt.services.transmitter
 
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.telegram.telegrambots.meta.api.objects.Message
@@ -15,7 +16,7 @@ class MessageProcessor(
     val swearAccountingService: SwearAccountingService,
     val userService: UserService
 ) {
-    val logger = LoggerFactory.getLogger(MessageProcessor::class.java)
+    val logger: Logger = LoggerFactory.getLogger(MessageProcessor::class.java)
     fun processMessage(message: Message) {
         if (message.text != null) {
             val user = message.from
@@ -38,7 +39,10 @@ class MessageProcessor(
                 }
             }
 
-            if (messageProcessingService.isEnglishLayout(messageText) && !messageProcessingService.isEnglishWord(messageText) && !messageText.startsWith("http")) {
+            if (messageProcessingService.isEnglishLayout(messageText)
+                && !messageProcessingService.isEnglishWord(messageText)
+                && !messageText.startsWith("http")
+                && !messageText.startsWith("/")) {
                 logger.info("Тут отправляются переведенные кракозябры, текст был - \"$messageText\"")
                 botHeart.sendMessage(chatId, messageProcessingService.invertKeyboardLayout(messageText), messageId)
             }
