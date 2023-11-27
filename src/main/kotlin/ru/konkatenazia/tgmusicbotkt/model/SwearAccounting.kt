@@ -11,7 +11,7 @@ class SwearAccounting(
     var isGroupChat: Boolean,
     var isActive: Boolean,
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_table_id", referencedColumnName = "id", nullable = false)
     var chatUser: ChatUser,
 
@@ -19,5 +19,6 @@ class SwearAccounting(
     var created: LocalDate,
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long,
 )
