@@ -31,6 +31,10 @@ class CallbackProcessor(
                 botHeart.sendMessage(keyboardService.getLetterKeyboard(chatId, musicRepository.getUniqueAuthorFirstLetters(), KeyboardContext.EN), messageId)
             }
 
+            if (musicRepository.getUniqueAuthorFirstLetters().contains(callbackData.last().toString())) {
+                botHeart.sendMessage(keyboardService.getSongPagedKeyboard(chatId, 1, 10, callbackData))
+            }
+
             if (callbackData.length == 1 && callbackData[0].isLetter()) {
 
             }
