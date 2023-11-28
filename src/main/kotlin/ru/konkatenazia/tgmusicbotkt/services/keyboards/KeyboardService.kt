@@ -6,7 +6,9 @@ import org.springframework.stereotype.Service
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton
+import ru.konkatenazia.tgmusicbotkt.dto.enums.CallbackPrefix
 import ru.konkatenazia.tgmusicbotkt.dto.enums.KeyboardContext
+import ru.konkatenazia.tgmusicbotkt.model.Music
 import ru.konkatenazia.tgmusicbotkt.reository.MusicRepository
 import ru.konkatenazia.tgmusicbotkt.reository.SongRepository
 import ru.konkatenazia.tgmusicbotkt.services.MessageProcessingService
@@ -69,26 +71,35 @@ class KeyboardService(
         return message
     }
 
-    fun getSongPagedKeyboard(chatId: Long, page: Int, pageSize: Int, firstLetter: String): SendMessage {
-        val pageable = PageRequest.of(page - 1, pageSize, Sort.by("author"))
-
-        val authorsPage = if (lastAuthorId != null) {
-            musicRepository.findAllByAuthorStartingWithIgnoreCaseAndIdGreaterThan(firstLetter, lastAuthorId!!, pageable)
-        } else {
-            musicRepository.findAllByAuthorStartingWithIgnoreCase(firstLetter, pageable)
-        }
-
+    fun getAuthorLetterKeyboard(
+        chatId: Long,
+        page: Int,
+        pageSize: Int,
+        firstLetters: String,
+        callbackPrefix: CallbackPrefix
+    ): SendMessage {
+        val pageable = PageRequest.of(page - 1, pageSize, Sort.by(KeyboardContext.AUTHOR.context))
         val rows = mutableListOf<List<InlineKeyboardButton>>()
 
-        for (author in authorsPage) {
+        val pages = if (lastAuthorId != null) {
+            musicRepository.findAllByAuthorStartingWithIgnoreCaseAndIdGreaterThan(
+                firstLetters,
+                lastAuthorId!!,
+                pageable
+            )
+        } else {
+            musicRepository.findAllByAuthorStartingWithIgnoreCase(firstLetters, pageable)
+        }
+
+        for (elem in pages) {
             val authorButton = InlineKeyboardButton()
-            authorButton.text = author.author
-            authorButton.callbackData = "getSong:${author.id}"
+            authorButton.text = elem.author
+            authorButton.callbackData = callbackPrefix.prefix + elem.id
             rows.add(listOf(authorButton))
         }
 
-        lastAuthorId = if (authorsPage.isNotEmpty()) {
-            authorsPage.last().id
+        lastAuthorId = if (pages.isNotEmpty()) {
+            pages.last().id
         } else {
             null
         }
@@ -96,7 +107,48 @@ class KeyboardService(
         val keyboardMarkup = InlineKeyboardMarkup(rows)
         val message = SendMessage()
         message.setChatId(chatId)
-        message.text = "Выберите первую букву"
+        message.text = "Выберите первую букву названия автора"
+        message.replyMarkup = keyboardMarkup
+        return message
+    }
+
+    fun getSongLetterKeyboard(
+        chatId: Long,
+        page: Int,
+        pageSize: Int,
+        firstLetters: String,
+        callbackPrefix: CallbackPrefix
+    ): SendMessage {
+        val pageable = PageRequest.of(page - 1, pageSize, Sort.by(KeyboardContext.SONG.context))
+        val songRows = mutableListOf<List<InlineKeyboardButton>>()
+
+        val pages = if (lastSongId != null) {
+            songRepository.findAllBySongNameStartingWithAndIdGreaterThan(
+                firstLetters,
+                lastSongId!!,
+                pageable
+            )
+        } else {
+            songRepository.findAllBySongNameStartingWith(firstLetters, pageable)
+        }
+
+        for (elem in pages) {
+            val authorButton = InlineKeyboardButton()
+            authorButton.text = elem.songName
+            authorButton.callbackData = callbackPrefix.prefix + elem.id
+            songRows.add(listOf(authorButton))
+        }
+
+        lastSongId = if (pages.isNotEmpty()) {
+            pages.last().id
+        } else {
+            null
+        }
+
+        val keyboardMarkup = InlineKeyboardMarkup(songRows)
+        val message = SendMessage()
+        message.setChatId(chatId)
+        message.text = "Выберите первую букву названия Песни"
         message.replyMarkup = keyboardMarkup
         return message
     }

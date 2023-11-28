@@ -1,8 +1,8 @@
 package ru.konkatenazia.tgmusicbotkt.dto.enums
 
-enum class KeyboardContext {
-    AUTHOR,
-    SONG,
-    RU,
-    EN;
+enum class KeyboardContext(val context: String) {
+    AUTHOR("author"),
+    SONG("songName"),
+    RU("ru"),
+    EN("en");
 }

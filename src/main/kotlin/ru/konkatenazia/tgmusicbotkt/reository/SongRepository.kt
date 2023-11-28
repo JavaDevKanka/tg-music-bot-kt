@@ -16,6 +16,9 @@ interface SongRepository : JpaRepository<Song, UUID> {
     @Query(value = "select path_to_file from song order by random() limit 1", nativeQuery = true)
     fun getRandomSong(): String
 
+    @Query(value = "SELECT DISTINCT LEFT(song_name, 1) AS first_letter FROM song", nativeQuery = true)
+    fun getUniqueSongNameFirstLetters(): List<String>
+
     fun findAllBySongNameStartingWith(firstLetter: String, pageable: Pageable): List<Song>
     fun findAllBySongNameStartingWithAndIdGreaterThan(firstLetter: String, lastSongId: UUID, pageable: PageRequest): List<Song>
 
