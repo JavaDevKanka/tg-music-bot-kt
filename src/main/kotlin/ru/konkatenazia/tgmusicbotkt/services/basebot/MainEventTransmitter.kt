@@ -17,7 +17,6 @@ class MainEventTransmitter(
     val messageProcessor: MessageProcessor,
     val musicService: MusicService
 ) {
-    val logger = LoggerFactory.getLogger(MainEventTransmitter::class.java)
 
     @EventListener
     fun processUpdate(update: Update) {

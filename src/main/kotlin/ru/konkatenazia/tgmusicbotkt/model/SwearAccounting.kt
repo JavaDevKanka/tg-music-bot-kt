@@ -1,6 +1,10 @@
 package ru.konkatenazia.tgmusicbotkt.model
 
 import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.Fetch
+import org.hibernate.annotations.FetchMode
+import javax.persistence.JoinColumn
+import javax.persistence.ManyToOne
 import java.time.LocalDate
 import javax.persistence.*
 
@@ -11,8 +15,9 @@ class SwearAccounting(
     var isGroupChat: Boolean,
     var isActive: Boolean,
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "user_table_id", referencedColumnName = "id", nullable = false)
+    @Fetch(FetchMode.JOIN)
     var chatUser: ChatUser,
 
     @CreationTimestamp

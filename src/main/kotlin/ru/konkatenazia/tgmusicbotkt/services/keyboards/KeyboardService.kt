@@ -107,7 +107,7 @@ class KeyboardService(
         val keyboardMarkup = InlineKeyboardMarkup(rows)
         val message = SendMessage()
         message.setChatId(chatId)
-        message.text = "Выберите первую букву названия автора"
+        message.text = "Выберите автора"
         message.replyMarkup = keyboardMarkup
         return message
     }

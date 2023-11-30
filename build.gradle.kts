@@ -35,8 +35,10 @@ val mapstructVersion = "1.5.3.Final"
 val apacheCommonsVersion = "1.24.0"
 val jaudiotaggerVersion = "2.0.3"
 val tukaaniVersion = "1.9"
+val coroutinesVersion = "1.7.1"
 
 dependencies {
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutinesVersion}")
     implementation("org.tukaani:xz:${tukaaniVersion}")
     implementation("org:jaudiotagger:${jaudiotaggerVersion}")
     implementation("org.apache.commons:commons-compress:${apacheCommonsVersion}")

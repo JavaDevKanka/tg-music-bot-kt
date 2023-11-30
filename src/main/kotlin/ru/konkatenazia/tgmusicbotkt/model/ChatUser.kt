@@ -12,7 +12,7 @@ class ChatUser(
     var lastName: String,
 
     @CreationTimestamp
-    var created: LocalDateTime,
+    var created: LocalDateTime?,
 
     @Id
     var id: Long,

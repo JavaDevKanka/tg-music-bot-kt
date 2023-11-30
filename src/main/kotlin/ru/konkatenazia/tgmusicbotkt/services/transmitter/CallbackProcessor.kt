@@ -39,10 +39,10 @@ class CallbackProcessor(
                     callbackData.last().toString(), CallbackPrefix.AUTHOR_LETTER_CALLBACK))
             }
 
-            if (songRepository.getUniqueSongNameFirstLetters().contains(callbackData.last().toString())) {
-                botHeart.sendMessage(keyboardService.getSongLetterKeyboard(chatId, 1, 10,
-                    callbackData.last().toString(), CallbackPrefix.SONG_NAME_LETTER_CALLBACK))
-            }
+//            if (songRepository.getUniqueSongNameFirstLetters().contains(callbackData.last().toString())) {
+//                botHeart.sendMessage(keyboardService.getSongLetterKeyboard(chatId, 1, 10,
+//                    callbackData.last().toString(), CallbackPrefix.SONG_NAME_LETTER_CALLBACK))
+//            }
 
         }
     }

@@ -36,11 +36,11 @@ spring:
       max-file-size: 400MB
       max-request-size: 400MB
   datasource:
-    url: jdbc:postgresql://localhost:5432/music_bot
-    username: postgres
-    password: postgres
+    url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
     hikari:
-      schema: mbt_kt
+      schema: ${POSTGRES_SCHEMA}
     jpa:
       hibernate:
       ddl-auto: none
@@ -54,10 +54,10 @@ spring:
     table: flyway_schema_history_tg_music_bot
     locations: classpath:db/migration
     enabled: true
-    schemas: mbt_kt
+    schemas: ${POSTGRES_SCHEMA}
   docker:
     compose:
-      enabled: false
+      enabled: true
 
 
 logging:
